@@ -1,0 +1,35 @@
+[*.{kt,kts}]
+# possible values: number (e.g. 2), "unset" (makes ktlint ignore indentation completely)
+# indent_size=4
+# true (recommended) / false
+# insert_final_newline=true
+# possible values: number (e.g. 120) (package name, imports & comments are ignored), "off"
+# it's automatically set to 100 on `ktlint --android ...` (per Android Kotlin Style Guide)
+max_line_length = 100
+continuation_indent_size = 4
+disabled_rules = no-wildcard-imports,experimental:annotation
+end_of_line=lf
+indent_style = space
+indent_size = 4
+ktlint_code_style = intellij_idea
+#trim_trailing_whitespace = true
+#insert_final_newline = true
+ktlint_function_naming_ignore_when_annotated_with = Composable
+ktlint_standard_import-ordering = disabled
+ktlint_standard_function-naming = disabled
+ktlint_standard_multiline_expression_wrapping = disabled
+ktlint_standard_trailing-comma-on-declaration-site = disabled
+ktlint_standard_multiline-expression-wrapping = disabled
+ktlint_standard_class-signature = disabled
+ktlint_standard_function-signature = disabled
+ktlint_standard_no-empty-first-line-in-method-block = disabled
+ktlint_standard_no-trailing-spaces = disabled
+ktlint_standard_trailing-comma-on-call-site = disabled
+
+
+
+
+
+#disabled_rules = ktlint-rule-id
+
+
