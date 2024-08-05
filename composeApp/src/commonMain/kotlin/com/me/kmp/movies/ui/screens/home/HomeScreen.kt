@@ -30,8 +30,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.me.kmp.movies.ErrorDialog
 import com.me.kmp.movies.ItemMovie
 import com.me.kmp.movies.domain.model.MovieModel
+import com.me.kmp.movies.ui.common.PermissionRequestEffect
 import com.me.kmp.movies.ui.screens.Screen
 import com.me.kmp.movies.utils.ResultObject
+import dev.icerock.moko.permissions.Permission
 import kmpmovies.composeapp.generated.resources.Res
 import kmpmovies.composeapp.generated.resources.app_name
 import kotlinx.coroutines.flow.StateFlow
@@ -45,6 +47,7 @@ fun HomeScreen(
     onMovieClick: (MovieModel) -> Unit,
     viewModel: HomeViewModel = koinViewModel()
 ) {
+
     Screen {
         val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
         Scaffold(
@@ -58,6 +61,10 @@ fun HomeScreen(
             },
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         ) { padding ->
+
+            PermissionRequestEffect(Permission.COARSE_LOCATION) { isGranted ->
+                viewModel.getMovies()
+            }
 
             StateHandler(
                 stateFlow = viewModel.movie,

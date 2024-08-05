@@ -1,22 +1,21 @@
-package com.me.kmp.movies.data.repository
+package com.me.kmp.movies.utils.repository
 
 import com.me.kmp.movies.data.remote.api.MoviesRemote
+import com.me.kmp.movies.data.repository.MoviesRepository
 import com.me.kmp.movies.data.repository.database.dao.MoviesDao
 import com.me.kmp.movies.domain.model.MovieModel
-import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.onEach
 
-class MoviesRepositoryImpl(
+
+class MoviesRepositoryFake(
     private val remote: MoviesRemote,
-    private val local: MoviesDao,
-    private val region: RegionRepository
+    private val local: MoviesDao
 ) : MoviesRepository {
 
     override val movies = local.fetchPopularMovies().onEach { movies ->
         if (movies.isEmpty()) {
-            Napier.d("region from iOS: ${region.getRegion()}")
             remote
-                .fetchPopularMovies(region.getRegion())
+                .fetchPopularMovies("US")
                 .movies
                 .let {
                     local.insertMovies(it)

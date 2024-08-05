@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import com.me.kmp.movies.data.repository.MoviesRepository
 import com.me.kmp.movies.domain.model.MovieModel
 import com.me.kmp.movies.utils.ResultObject
-import com.me.kmp.movies.utils.launchData
 import com.me.kmp.movies.utils.launchFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -31,9 +30,5 @@ class DetailViewModel(
 
     fun setFavorite(movieModel: MovieModel) = launchFlow(stateFlow = _movie) {
         repository.setFavoriteMovie(movieModel)
-    }
-
-    fun setFavorite2(movieModel: MovieModel) = launchData {
-        repository.setFavoriteMovie2(movieModel)
     }
 }

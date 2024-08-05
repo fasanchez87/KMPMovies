@@ -41,6 +41,8 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.koin.android)
+            implementation(libs.play.services.location)
+            implementation(libs.kotlinx.coroutines.play.services)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -64,6 +66,19 @@ kotlin {
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqlite.bundle)
+            implementation(libs.moko.permissions)
+            implementation(libs.napier)
+        }
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
+            implementation(libs.junit)
+            implementation(libs.kotlinx.coroutines.test)
+            implementation(libs.koin.test)
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
+            implementation(libs.junit)
+            implementation(project.dependencies.platform(libs.koin.bom))
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
@@ -155,6 +170,7 @@ room {
 }
 
 dependencies {
+    implementation(libs.androidx.junit.ktx)
     add("kspCommonMainMetadata", libs.androidx.room.compiler)
 }
 

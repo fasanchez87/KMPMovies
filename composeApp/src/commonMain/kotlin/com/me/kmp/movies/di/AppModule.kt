@@ -8,6 +8,7 @@ import com.me.kmp.movies.data.mapper.MoviesMapper
 import com.me.kmp.movies.data.remote.api.MoviesRemote
 import com.me.kmp.movies.data.repository.MoviesRepository
 import com.me.kmp.movies.data.repository.MoviesRepositoryImpl
+import com.me.kmp.movies.data.repository.RegionRepository
 import com.me.kmp.movies.data.repository.database.MoviesDatabase
 import com.me.kmp.movies.data.repository.database.dao.MoviesDao
 import com.me.kmp.movies.ui.screens.detail.DetailViewModel
@@ -100,7 +101,8 @@ val repositoryModule =
         factory<MoviesRepository> {
             MoviesRepositoryImpl(
                 remote = get(),
-                local = get()
+                local = get(),
+                region = get()
             )
         }
         factory { MoviesRemote(get(), get(), get()) }

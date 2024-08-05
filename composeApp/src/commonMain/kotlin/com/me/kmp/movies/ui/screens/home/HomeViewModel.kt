@@ -16,24 +16,7 @@ class HomeViewModel(
     private val _movie = MutableStateFlow<ResultObject<List<MovieModel>>>(ResultObject.Loading())
     val movie: StateFlow<ResultObject<List<MovieModel>>> = _movie.asStateFlow()
 
-    init {
-        getMovies()
-    }
-
-    private fun getMovies() {
-//        viewModelScope.launch {
-//            try {
-//                val movies = moviesRepository.fetchPopularMovies(region = "US").movies
-//                _movie.value = ResultObject.success(movies)
-//            } catch (exception: Exception) {
-//                exception.printStackTrace()
-//                _movie.value = ResultObject.error(exception)
-//            }
-//        }
-
-        launchFlow(stateFlow = _movie) {
-            moviesRepository.movies
-        }
+    fun getMovies() = launchFlow(stateFlow = _movie) {
+        moviesRepository.movies
     }
 }
-
