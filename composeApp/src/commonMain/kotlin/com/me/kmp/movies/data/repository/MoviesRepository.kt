@@ -11,7 +11,7 @@ interface MoviesRepository {
 
     fun fetchMovieById(id: Int): Flow<MovieModel?>
 
-    suspend fun setFavoriteMovie2(movie: MovieModel)
+   // suspend fun setFavoriteMovie2(movie: MovieModel)
 
     suspend fun setFavoriteMovie(movie: MovieModel): Flow<MovieModel?>
 }

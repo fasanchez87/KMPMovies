@@ -36,14 +36,14 @@ class MoviesRepositoryImpl(
     }
 
     override suspend fun setFavoriteMovie(movie: MovieModel) = local
-        .setFavoriteMovie(movie.id, movie.isFavorite)
+        .setFavoriteMovie(movie.copy(isFavorite = !movie.isFavorite))
         .let {
             local.fetchMovieById(movie.id)
         }
 
-    override suspend fun setFavoriteMovie2(movie: MovieModel) {
-        movie.let {
-            local.setFavoriteMovie(it.id, it.isFavorite)
-        }
-    }
+//    override suspend fun setFavoriteMovie2(movie: MovieModel) {
+//        movie.let {
+//            local.setFavoriteMovie(it.id, it.isFavorite)
+//        }
+//    }
 }

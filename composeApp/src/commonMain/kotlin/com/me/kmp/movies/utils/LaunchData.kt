@@ -79,19 +79,21 @@ fun <T> ViewModel.launchData(
 ) {
     viewModelScope.launch {
         try {
-            //  stateFlow?.value = ResultObject.loading()
+            stateFlow?.value = ResultObject.loading()
             println("Corrutina lanzada en $this")
             val data = block()
             if (data == null) {
+                println("Corrutina empty en $this")
                 stateFlow?.value = ResultObject.empty()
             } else {
                 stateFlow?.value = ResultObject.success(data)
             }
         } catch (exception: Exception) {
             if (exception is CancellationException) {
-                println("Corrutina cancelada en $this")
+                println("Corrutina cancelada en $this por CancellationException")
             } else {
                 exception.printStackTrace()
+                println("Corrutina exception en $this")
                 stateFlow?.value = ResultObject.error(exception)
             }
         }

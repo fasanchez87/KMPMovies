@@ -63,13 +63,13 @@ fun HomeScreen(
         ) { padding ->
 
             PermissionRequestEffect(Permission.COARSE_LOCATION) { isGranted ->
-                viewModel.getMovies()
+                viewModel.processIntent(HomeIntent.LoadMovies)
             }
 
             StateHandler(
-                stateFlow = viewModel.movie,
+                stateFlow = viewModel.status,
                 // onLoading = { ShowLoading() },
-                onSuccess = { movies -> MoviesList(movies, onMovieClick, padding) },
+                onSuccess = { state -> MoviesList(state.movies, onMovieClick, padding) },
                 // onError = { exception -> ShowErrorMessage(exception) },
                 // onEmpty = { ShowDataEmptyMessage("No movies found") }
             )

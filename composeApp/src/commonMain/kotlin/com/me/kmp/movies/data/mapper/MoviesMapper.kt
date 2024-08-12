@@ -7,6 +7,7 @@ import com.me.kmp.movies.domain.model.MoviesModel
 class MoviesMapper(
     private val movieMapper: MovieMapper,
 ) : IMapper<MoviesEntity, MoviesModel> {
+
     override fun toEntity(model: MoviesModel): MoviesEntity {
         return with(model) {
             MoviesEntity(
@@ -21,10 +22,10 @@ class MoviesMapper(
     override fun toModel(entity: MoviesEntity): MoviesModel {
         return with(entity) {
             MoviesModel(
-                page,
-                movies.map { movieMapper.toModel(it) },
-                totalPages,
-                totalResults,
+                page = page,
+                movies = movies.map { movieMapper.toModel(it) },
+                totalPages = totalPages,
+                totalResults = totalResults,
             )
         }
     }

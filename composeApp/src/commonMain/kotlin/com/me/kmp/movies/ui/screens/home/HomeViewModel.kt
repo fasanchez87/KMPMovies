@@ -8,15 +8,34 @@ import com.me.kmp.movies.utils.launchFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class HomeViewModel(
-    private val moviesRepository: MoviesRepository
-) : ViewModel() {
+class HomeViewModel : ViewModel(), KoinComponent {
 
-    private val _movie = MutableStateFlow<ResultObject<List<MovieModel>>>(ResultObject.Loading())
-    val movie: StateFlow<ResultObject<List<MovieModel>>> = _movie.asStateFlow()
+    private val moviesRepository: MoviesRepository by inject()
 
-    fun getMovies() = launchFlow(stateFlow = _movie) {
-        moviesRepository.movies
+    private val _status = MutableStateFlow<ResultObject<MoviesState>>(ResultObject.Loading())
+    val status: StateFlow<ResultObject<MoviesState>> = _status.asStateFlow()
+
+    private fun getMovies() = launchFlow(stateFlow = _status) {
+        moviesRepository.movies.map {
+            MoviesState(it)
+        }
+    }
+
+    fun processIntent(intent: HomeIntent) {
+        when (intent) {
+            is HomeIntent.LoadMovies -> getMovies()
+        }
     }
 }
+
+sealed class HomeIntent {
+    data object LoadMovies : HomeIntent()
+}
+
+data class MoviesState(
+    val movies: List<MovieModel>
+)

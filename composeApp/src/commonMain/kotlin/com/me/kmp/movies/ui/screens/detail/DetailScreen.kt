@@ -80,7 +80,7 @@ fun DrawDetailScreen(
     viewModel: DetailViewModel
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-    val isFavorite = remember { mutableStateOf(movie.isFavorite) }
+    //val isFavorite = remember { mutableStateOf(movie.isFavorite) }
 
     Scaffold(
         topBar = {
@@ -92,11 +92,11 @@ fun DrawDetailScreen(
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                isFavorite.value = !isFavorite.value
-                viewModel.setFavorite(movie.copy(isFavorite = isFavorite.value))
+                //isFavorite.value = isFavorite.value
+                viewModel.setFavorite(movie)
             }){
                 Icon(
-                    imageVector = if (isFavorite.value) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                    imageVector = if (movie.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                     contentDescription = stringResource(Res.string.back)
                 )
             }

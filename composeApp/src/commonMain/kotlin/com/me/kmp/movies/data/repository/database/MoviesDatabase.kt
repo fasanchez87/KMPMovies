@@ -4,6 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.me.kmp.movies.data.repository.database.dao.MoviesDao
 import com.me.kmp.movies.domain.model.MovieModel
+import com.me.kmp.movies.domain.model.MoviesModel
 
 const val DATABASE_NAME = "movies.db"
 
@@ -16,9 +17,10 @@ interface DB {
 
 @Database(
     entities = [
-        MovieModel::class
+        MovieModel::class,
+        MoviesModel::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class MoviesDatabase : RoomDatabase(), DB {

@@ -33,10 +33,9 @@ moko-permissions = "0.18.0"
 play-services-location = "21.3.0"
 kotlinx-coroutines-play-services = "1.6.1"
 napier = "2.7.1"
+skie = "0.8.2"
 
 [libraries]
-
-
 
 kotlinx-coroutines-play-services = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-play-services", version.ref = "kotlinx-coroutines-play-services" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "play-services-location" }
@@ -57,6 +56,7 @@ compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = 
 navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
 #Kotin Serialization library to navigation
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlin-serialization" }
+lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
 lifecycle-viewmodel-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "androidx-room" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidx-room" }
@@ -93,3 +93,6 @@ gradle-build-config = { id = "com.github.gmazzo.buildconfig", version.ref = "bui
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 androidx-room = { id = "androidx.room", version.ref = "androidx-room" }
+#Skie library for better interopability beetwen Kotlin and Swift, it is used to used some
+#charactristics of Kotlin in Swift code.
+skie = { id = "co.touchlab.skie", version.ref = "skie" }

@@ -13,6 +13,7 @@ plugins {
     alias(libs.plugins.ktlint)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.androidx.room)
+    alias(libs.plugins.skie)
 }
 
 kotlin {
@@ -29,8 +30,13 @@ kotlin {
         iosSimulatorArm64(),
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
+            //For the framework to be usable in Xcode, the following must be set:
+            //Xcode recognizes the framework as a Swift package
+            //Also, this provide all functions and classes to be used in Swift
             baseName = "ComposeApp"
             isStatic = true
+            //Export the following libraries to be used in Swift
+            export(libs.lifecycle.viewmodel)
         }
     }
 
@@ -68,6 +74,9 @@ kotlin {
             implementation(libs.androidx.sqlite.bundle)
             implementation(libs.moko.permissions)
             implementation(libs.napier)
+            //Expose the following libraries to be used in Swift,
+            //for this is necessary use api instead of implementation
+            api(libs.lifecycle.viewmodel)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -151,6 +160,13 @@ android {
 
         buildConfigField("API_KEY", apiKey)
         buildConfigField("BASE_HOST", baseHost)
+    }
+
+    skie {
+        features {
+            enableSwiftUIObservingPreview = true
+           // enableFutureCombineExtensionPreview = true
+        }
     }
 
     configure<KtlintExtension> {
