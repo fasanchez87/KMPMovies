@@ -53,6 +53,7 @@ struct HomeScreen: View {
                 }
             }
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
