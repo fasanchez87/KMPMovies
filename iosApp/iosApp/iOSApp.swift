@@ -12,6 +12,7 @@ struct iOSApp: App {
     var body: some Scene {
         WindowGroup {
             //ContentView()
+            //Here, we can navigate to iOS by native form
             HomeScreen()
         }
     }
