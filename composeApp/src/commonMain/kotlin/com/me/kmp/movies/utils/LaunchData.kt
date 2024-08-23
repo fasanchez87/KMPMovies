@@ -60,6 +60,7 @@ fun <T> ViewModel.launchFlow(
             if (exception is CancellationException) {
                 println("Corrutina cancelada en $this")
             } else {
+                println("Corrutina cancelada en $this")
                 exception.printStackTrace()
                 stateFlow.value = ResultObject.error(exception)
             }

@@ -13,15 +13,21 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
+import com.arkivanov.decompose.defaultComponentContext
+import com.me.kmp.movies.root.DefaultRootComponent
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val root = DefaultRootComponent(componentContext = defaultComponentContext())
+
         enableEdgeToEdge()
+
         setContent {
             EnableTransparentStatusBar()
-            HandlerEventBackAndroid()
-            App()
+            //HandlerEventBackAndroid()
+            App(root = root)
         }
     }
 
@@ -47,5 +53,5 @@ private fun EnableTransparentStatusBar() {
 @Preview
 @Composable
 fun AppAndroidPreview() {
-    App()
+    //App()
 }

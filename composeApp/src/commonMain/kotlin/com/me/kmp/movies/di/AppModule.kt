@@ -2,6 +2,7 @@ package com.me.kmp.movies.di
 
 import androidx.room.RoomDatabase
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import com.arkivanov.decompose.ComponentContext
 import com.me.kmp.movies.BuildConfig
 import com.me.kmp.movies.data.mapper.MovieMapper
 import com.me.kmp.movies.data.mapper.MoviesMapper
@@ -11,6 +12,7 @@ import com.me.kmp.movies.data.repository.MoviesRepositoryImpl
 import com.me.kmp.movies.data.repository.RegionRepository
 import com.me.kmp.movies.data.repository.database.MoviesDatabase
 import com.me.kmp.movies.data.repository.database.dao.MoviesDao
+import com.me.kmp.movies.root.DetailComponentImpl
 import com.me.kmp.movies.ui.screens.detail.DetailViewModel
 import com.me.kmp.movies.ui.screens.home.HomeViewModel
 import io.ktor.client.HttpClient
@@ -27,6 +29,7 @@ import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.serialization.json.Json
+import org.koin.compose.viewmodel.dsl.viewModel
 import org.koin.compose.viewmodel.dsl.viewModelOf
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
@@ -120,6 +123,7 @@ val viewModelModule =
     module {
         viewModelOf(::HomeViewModel)
         viewModelOf(::DetailViewModel)
+        //viewModel { (id: Int) -> DetailViewModel(id) }
     }
 
 fun initKoin(config: KoinAppDeclaration? = null) =

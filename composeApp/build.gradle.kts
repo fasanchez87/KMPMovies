@@ -31,6 +31,8 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+            export(libs.decompose)
+            export(libs.essenty.lifecycle)
         }
     }
 
@@ -68,6 +70,9 @@ kotlin {
             implementation(libs.androidx.sqlite.bundle)
             implementation(libs.moko.permissions)
             implementation(libs.napier)
+            api(libs.decompose)
+            api(libs.decompose.extensions)
+            api(libs.essenty.lifecycle)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

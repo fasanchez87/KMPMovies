@@ -1,6 +1,11 @@
 package com.me.kmp.movies.ui.screens.detail
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.ViewModelStoreOwner
+import com.arkivanov.essenty.instancekeeper.InstanceKeeper
+import com.arkivanov.essenty.instancekeeper.InstanceKeeperOwner
+import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.me.kmp.movies.data.repository.MoviesRepository
 import com.me.kmp.movies.domain.model.MovieModel
 import com.me.kmp.movies.utils.ResultObject
@@ -10,6 +15,18 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+
+internal fun InstanceKeeperOwner.viewModelStoreOwner(): ViewModelStoreOwner =
+    instanceKeeper.getOrCreate(::ViewModelStoreOwnerInstance)
+
+private class ViewModelStoreOwnerInstance : ViewModelStoreOwner, InstanceKeeper.Instance {
+
+    override val viewModelStore: ViewModelStore = ViewModelStore()
+
+    override fun onDestroy() {
+        viewModelStore.clear()
+    }
+}
 
 class DetailViewModel(
     id: Int

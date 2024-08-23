@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.me.kmp.movies.domain.model.MovieModel
+import com.me.kmp.movies.root.DetailComponent
 import com.me.kmp.movies.ui.screens.Screen
 import com.me.kmp.movies.ui.screens.home.StateHandler
 import kmpmovies.composeapp.generated.resources.Res
@@ -46,24 +47,25 @@ import kmpmovies.composeapp.generated.resources.original_title
 import kmpmovies.composeapp.generated.resources.popularity
 import kmpmovies.composeapp.generated.resources.release_date
 import kmpmovies.composeapp.generated.resources.vote_average
-
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
+import org.koin.core.parameter.parametersOf
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
 fun DetailScreen(
-    viewModel: DetailViewModel = koinViewModel(),
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    viewModel: DetailViewModel = koinViewModel()
 ) {
+
     Screen {
         StateHandler(
             onLoading = { null },
             stateFlow = viewModel.movie,
             onSuccess = { movie ->
                 DrawDetailScreen(
-                    onBack = onBack,
+                    onBack = { onBack() },
                     movie = movie,
                     viewModel = viewModel
                 )

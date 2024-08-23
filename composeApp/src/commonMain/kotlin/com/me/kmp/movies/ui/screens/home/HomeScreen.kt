@@ -30,6 +30,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.me.kmp.movies.ErrorDialog
 import com.me.kmp.movies.ItemMovie
 import com.me.kmp.movies.domain.model.MovieModel
+import com.me.kmp.movies.root.HomeComponent
 import com.me.kmp.movies.ui.common.PermissionRequestEffect
 import com.me.kmp.movies.ui.screens.Screen
 import com.me.kmp.movies.utils.ResultObject
@@ -44,8 +45,9 @@ import org.koin.core.annotation.KoinExperimentalAPI
 @OptIn(ExperimentalMaterial3Api::class, KoinExperimentalAPI::class)
 @Composable
 fun HomeScreen(
-    onMovieClick: (MovieModel) -> Unit,
-    viewModel: HomeViewModel = koinViewModel()
+    //onMovieClick: (MovieModel) -> Unit,
+    viewModel: HomeViewModel = koinViewModel(),
+    component: HomeComponent
 ) {
 
     Screen {
@@ -69,7 +71,15 @@ fun HomeScreen(
             StateHandler(
                 stateFlow = viewModel.movie,
                 // onLoading = { ShowLoading() },
-                onSuccess = { movies -> MoviesList(movies, onMovieClick, padding) },
+                onSuccess = { movies ->
+                    MoviesList(
+                        movies,
+                        {
+                            component.onMovieClick(it)
+                        },
+                        padding
+                    )
+                },
                 // onError = { exception -> ShowErrorMessage(exception) },
                 // onEmpty = { ShowDataEmptyMessage("No movies found") }
             )
