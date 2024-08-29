@@ -11,14 +11,19 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,6 +35,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.me.kmp.movies.ErrorDialog
 import com.me.kmp.movies.ItemMovie
 import com.me.kmp.movies.domain.model.MovieModel
+import com.me.kmp.movies.expects.closeScreen
+import com.me.kmp.movies.expects.openAppSettings
 import com.me.kmp.movies.root.HomeComponent
 import com.me.kmp.movies.ui.common.PermissionRequestEffect
 import com.me.kmp.movies.ui.screens.Screen
@@ -45,13 +52,16 @@ import org.koin.core.annotation.KoinExperimentalAPI
 @OptIn(ExperimentalMaterial3Api::class, KoinExperimentalAPI::class)
 @Composable
 fun HomeScreen(
-    //onMovieClick: (MovieModel) -> Unit,
+    // onMovieClick: (MovieModel) -> Unit,
     viewModel: HomeViewModel = koinViewModel(),
     component: HomeComponent
 ) {
 
     Screen {
         val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+        var permissionGranted by remember { mutableStateOf(false) }
+        var showSettingsDialog by remember { mutableStateOf(false) }
+
         Scaffold(
             topBar = {
                 TopAppBar(
@@ -64,8 +74,31 @@ fun HomeScreen(
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         ) { padding ->
 
-            PermissionRequestEffect(Permission.COARSE_LOCATION) { isGranted ->
-                viewModel.getMovies()
+            PermissionRequestEffect(
+                Permission.COARSE_LOCATION,
+                onPermissionGranted = {
+                    permissionGranted = true
+                    viewModel.getMovies()
+                },
+                onPermissionDenied = {
+                    //closeScreen()
+                },
+                onPermissionDeniedAlways = {
+                    showSettingsDialog = true
+                }
+            )
+
+            if (showSettingsDialog) {
+                showDialogToOpenSettings(
+                    onConfirm = {
+                        openAppSettings()
+                       // closeScreen()
+                        showSettingsDialog = false
+                    },
+                    onDismiss = {
+                        showSettingsDialog = true
+                    }
+                )
             }
 
             StateHandler(
@@ -85,6 +118,27 @@ fun HomeScreen(
             )
         }
     }
+}
+
+@Composable
+fun showDialogToOpenSettings(
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        confirmButton = {
+            TextButton(onClick = onConfirm) {
+                Text("Open Settings")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancel")
+            }
+        },
+        text = { Text("Permission is denied permanently. Please enable it from settings.") }
+    )
 }
 
 @Composable

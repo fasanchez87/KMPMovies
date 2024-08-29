@@ -37,7 +37,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.me.kmp.movies.domain.model.MovieModel
-import com.me.kmp.movies.root.DetailComponent
 import com.me.kmp.movies.ui.screens.Screen
 import com.me.kmp.movies.ui.screens.home.StateHandler
 import kmpmovies.composeapp.generated.resources.Res
@@ -50,7 +49,6 @@ import kmpmovies.composeapp.generated.resources.vote_average
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import org.koin.core.parameter.parametersOf
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
@@ -96,7 +94,7 @@ fun DrawDetailScreen(
             FloatingActionButton(onClick = {
                 isFavorite.value = !isFavorite.value
                 viewModel.setFavorite(movie.copy(isFavorite = isFavorite.value))
-            }){
+            }) {
                 Icon(
                     imageVector = if (isFavorite.value) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                     contentDescription = stringResource(Res.string.back)

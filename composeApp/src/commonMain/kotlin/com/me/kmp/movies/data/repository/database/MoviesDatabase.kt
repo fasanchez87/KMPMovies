@@ -23,5 +23,5 @@ interface DB {
 )
 abstract class MoviesDatabase : RoomDatabase(), DB {
     abstract fun moviesDao(): MoviesDao
-    override fun clearAllTables(){}
+    override fun clearAllTables() {}
 }

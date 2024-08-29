@@ -18,12 +18,12 @@ class RegionRepositoryImpl : RegionRepository {
 
     override suspend fun getRegion(): String {
         Napier.d("region from iOS: ${getCurrentLocation()?.toRegion() ?: DEFAULT_REGION}")
+        println("region from iOS: ${getCurrentLocation()?.toRegion() ?: DEFAULT_REGION}")
         return getCurrentLocation()?.toRegion() ?: DEFAULT_REGION
     }
 
     private suspend fun getCurrentLocation(): CLLocation? =
         suspendCancellableCoroutine { continuation ->
-            
             val delegate = object : NSObject(), CLLocationManagerDelegateProtocol {
 
                 override fun locationManager(
@@ -32,22 +32,28 @@ class RegionRepositoryImpl : RegionRepository {
                 ) {
                     val location = didUpdateLocations.lastOrNull() as? CLLocation
                     locationManager.stopUpdatingLocation()
-                    continuation.resume(location)
+                    if (continuation.isActive) {
+                        print("location on  by didUpdateLocations status: $location")
+                        continuation.resume(location)
+                    }
                 }
 
                 override fun locationManager(
                     manager: CLLocationManager,
                     didFailWithError: NSError
                 ) {
-                    continuation.resume(null)
                     locationManager.stopUpdatingLocation()
-                    continuation.resumeWithException(
-                        RuntimeException(didFailWithError.localizedDescription)
-                    )
+                    if (continuation.isActive) {
+                        print("location on  by didFailWithError status: $didFailWithError")
+                        continuation.resumeWithException(
+                            RuntimeException(didFailWithError.localizedDescription)
+                        )
+                    }
                 }
             }
 
             continuation.invokeOnCancellation {
+                print("location on  by didFailWithError status: ${it?.message}")
                 locationManager.stopUpdatingLocation()
             }
 
@@ -60,11 +66,13 @@ class RegionRepositoryImpl : RegionRepository {
         suspendCancellableCoroutine { continuation ->
             val geocoder = CLGeocoder()
             geocoder.reverseGeocodeLocation(this) { placemark, error ->
-                if (error != null || placemark == null) {
-                    continuation.resume(DEFAULT_REGION)
-                } else {
-                    val countryCode = placemark.firstOrNull()?.let { (it as CLPlacemark).ISOcountryCode }
-                    continuation.resume(countryCode ?: DEFAULT_REGION)
+                if (continuation.isActive) {
+                    if (error != null || placemark == null) {
+                        continuation.resume(DEFAULT_REGION)
+                    } else {
+                        val countryCode = placemark.firstOrNull()?.let { (it as CLPlacemark).ISOcountryCode }
+                        continuation.resume(countryCode ?: DEFAULT_REGION)
+                    }
                 }
             }
         }

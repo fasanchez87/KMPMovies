@@ -90,7 +90,7 @@ kotlin {
         }
     }
 
-    sourceSets.commonMain{
+    sourceSets.commonMain {
         kotlin.srcDir("build/generated/ksp/metadata")
     }
 

@@ -1,23 +1,15 @@
 package com.me.kmp.movies.utils
 
-import com.me.kmp.movies.di.appModule
-import com.me.kmp.movies.di.mapperModule
-import com.me.kmp.movies.di.nativeModule
-import com.me.kmp.movies.di.networkModule
-import com.me.kmp.movies.di.repositoryModule
-import com.me.kmp.movies.di.viewModelModule
 import com.me.kmp.movies.ui.screens.home.HomeViewModel
 import com.me.kmp.movies.utils.di.testModule
-import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.test.KoinTest
 import org.koin.test.inject
-import kotlin.test.Test
 
-class LaunchDataTest: KoinTest {
+class LaunchDataTest : KoinTest {
 
     private val viewModel: HomeViewModel by inject()
 
@@ -49,6 +41,5 @@ class LaunchDataTest: KoinTest {
 //
 //        assertEquals(ResultObject.success(data), viewModel.movie.value)
 //    }
-
     }
 }

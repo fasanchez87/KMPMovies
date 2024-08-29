@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.me.kmp.movies.domain.model.MovieModel
-import com.me.kmp.movies.domain.model.MoviesModel
 import kotlinx.coroutines.flow.Flow
 
 @Dao

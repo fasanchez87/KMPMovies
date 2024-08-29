@@ -23,4 +23,3 @@ sealed class ResultObject<T> {
         fun <T> empty(): ResultObject<T> = Empty()
     }
 }
-

@@ -2,22 +2,20 @@ package com.me.kmp.movies.di
 
 import androidx.room.RoomDatabase
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
-import com.arkivanov.decompose.ComponentContext
 import com.me.kmp.movies.BuildConfig
 import com.me.kmp.movies.data.mapper.MovieMapper
 import com.me.kmp.movies.data.mapper.MoviesMapper
 import com.me.kmp.movies.data.remote.api.MoviesRemote
 import com.me.kmp.movies.data.repository.MoviesRepository
 import com.me.kmp.movies.data.repository.MoviesRepositoryImpl
-import com.me.kmp.movies.data.repository.RegionRepository
 import com.me.kmp.movies.data.repository.database.MoviesDatabase
 import com.me.kmp.movies.data.repository.database.dao.MoviesDao
-import com.me.kmp.movies.root.DetailComponentImpl
 import com.me.kmp.movies.ui.screens.detail.DetailViewModel
 import com.me.kmp.movies.ui.screens.home.HomeViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.DefaultRequest
+import io.ktor.client.plugins.HttpRequestRetry
 import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -29,7 +27,6 @@ import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.serialization.json.Json
-import org.koin.compose.viewmodel.dsl.viewModel
 import org.koin.compose.viewmodel.dsl.viewModelOf
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
@@ -81,7 +78,21 @@ val networkModule =
                         }
                 }
                 install(HttpTimeout) {
-                    requestTimeoutMillis = 15_000
+                    requestTimeoutMillis = 30_000
+                    connectTimeoutMillis = 30_000
+                }
+                // Resolved issue on iOS permission
+                install(HttpRequestRetry) {
+                    maxRetries = 5
+                    retryIf { request, response ->
+                        !response.status.isSuccess()
+                    }
+                    retryOnExceptionIf { request, cause ->
+                        cause !is BaseHttpException
+                    }
+                    delayMillis { retry ->
+                        retry * 3000L
+                    } // retries in 3, 6, 9, etc. seconds
                 }
                 HttpResponseValidator {
                     validateResponse { response ->
@@ -123,7 +134,7 @@ val viewModelModule =
     module {
         viewModelOf(::HomeViewModel)
         viewModelOf(::DetailViewModel)
-        //viewModel { (id: Int) -> DetailViewModel(id) }
+        // viewModel { (id: Int) -> DetailViewModel(id) }
     }
 
 fun initKoin(config: KoinAppDeclaration? = null) =

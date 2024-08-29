@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             EnableTransparentStatusBar()
-            //HandlerEventBackAndroid()
+            // HandlerEventBackAndroid()
             App(root = root)
         }
     }
@@ -53,5 +53,5 @@ private fun EnableTransparentStatusBar() {
 @Preview
 @Composable
 fun AppAndroidPreview() {
-    //App()
+    // App()
 }

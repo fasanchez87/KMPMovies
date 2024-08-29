@@ -6,7 +6,6 @@ import com.me.kmp.movies.data.repository.database.dao.MoviesDao
 import com.me.kmp.movies.domain.model.MovieModel
 import kotlinx.coroutines.flow.onEach
 
-
 class MoviesRepositoryFake(
     private val remote: MoviesRemote,
     private val local: MoviesDao
